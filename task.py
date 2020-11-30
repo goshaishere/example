@@ -57,9 +57,21 @@ class StreamIt:
         for dir_path, subdir_list, name_list in os.walk(self.schema_path):
             self.storage_schema_names = name_list
 
-    def json_0(self):
+    def write_in_log(self, file, text, i):
+        file = open(file=file, mode='a', encoding='utf-8')
+        text_0 = str(i)
+        file.write(text_0)
+        file.write(text)
+        text_1 = "\n"
+        file.write(text_1)
+        file.close()
+
+    def clear_output(self):
         file = open(file=self.output_filename, mode='w', encoding='utf-8')
         file.close()
+
+    def json_0(self):
+        self.clear_output()
 
         for i in self.json_names_list:
             json_name = str(i)
@@ -71,15 +83,8 @@ class StreamIt:
                     type_loco = str(type(data))
                     x = "<class 'NoneType'>"
                     if type_loco == x:
-                        """перед continue добавить запись об ошибке типа, не читается json"""
-                        file = open(file=self.output_filename, mode='a', encoding='utf-8')
-                        text_0 = str(i)
-                        file.write(text_0)
-                        text = " - данный JSON не читается"
-                        file.write(text)
-                        text_1 = "\n"
-                        file.write(text_1)
-                        file.close()
+                        """добавить запись об ошибке типа, не читается json"""
+                        self.write_in_log(file=self.output_filename, text=" - данный JSON не читается", i=i)
                         continue
 
                     keys_loco = []
@@ -90,24 +95,17 @@ class StreamIt:
                     a = []
                     if keys_loco == a:
                         """нет ключей, записать в лог"""
-                        file = open(file=self.output_filename, mode='a', encoding='utf-8')
-                        text_0 = str(i)
-                        file.write(text_0)
-                        text = " - в данном JSON ключей не обнаружено"
-                        file.write(text)
-                        text_1 = "\n"
-                        file.write(text_1)
-                        file.close()
+                        self.write_in_log(file=self.output_filename, text=" - в данном JSON ключей не обнаружено", i=i)
                         continue
 
                     print(keys_loco)
                     self.json_dicts.update({i: keys_loco})
 
         #
-        # len_0 = len(self.json_dicts)
-        # len_1 = len(self.json_names_list)
-        # print(len_0, self.json_dicts)
-        # print(len_1, self.json_names_list)
+        len_0 = len(self.json_dicts)
+        len_1 = len(self.json_names_list)
+        print(len_0, self.json_dicts)
+        print(len_1, self.json_names_list)
 
     def schema_0(self):
         for i in self.storage_schema_names:
