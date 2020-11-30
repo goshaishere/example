@@ -19,7 +19,7 @@ import shutil
 
 
 class Streamlining:
-    """класс усложненное задание"""
+    """сортировка без предварительного извлечения архива в папку"""
     def __init__(self):
         self.name_of_zip = 'icons.zip'
         self.name_of_unzipped_folder = 'icons'
