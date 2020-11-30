@@ -30,11 +30,11 @@ from pprint import pprint
 
 class StreamIt:
     def __init__(self):
-        # контейнер для жсонов и относительный путь к нему
+        # контейнер для жсонов и относительный путь к папке с JSON
         self.event_path = "task_folder\\event"
         self.storage_json_names = []
 
-        # список схем и относительный путь к ним
+        # список для схем и относительный путь к SCHEMA
         self.storage_schema_names = []
         self.schema_path = "task_folder\\schema"
 
