@@ -79,8 +79,10 @@ class StreamIt:
         for name_schema, data_schema in self.storage_schema_content:
             for name_json, data_json in self.storage_json_content:
                 validated = data_schema.is_valid(data_json)
-                print(name_schema, name_json, validated)
-            print()
+                data_json = dict(data_json)
+                for key, value in data_json.items():
+                    print(key)
+                    print(value)
 
 
 
