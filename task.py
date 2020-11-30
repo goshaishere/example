@@ -67,10 +67,15 @@ class StreamIt:
                         """перед continue добавить запись об ошибке типа"""
                         continue
                     pprint(data)
+                    print()
                     print('filename - ', i)
+                    print()
                     for key, value in data.items():
                         print('keys - ', key)
                         print('value - ', value)
+                    print()
+                    print()
+                    print()
 
     def schema_0(self):
         for dir_path, subdir_list, name_list in os.walk(self.schema_path):
