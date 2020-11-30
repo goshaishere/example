@@ -48,8 +48,6 @@ class StreamIt:
         for dir_path, subdir_list, name_list in os.walk(self.event_path):
             self.storage_json_names = name_list
 
-
-
     def json_0(self):
         for i in self.storage_json_names:
             json_name = str(i)
