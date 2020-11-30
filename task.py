@@ -66,6 +66,7 @@ class StreamIt:
                     if str(type_loco) == "<class 'NoneType'>":
                         """перед continue добавить запись об ошибке типа"""
                         continue
+                    pprint(data)
                     print('filename - ', i)
                     for key, value in data.items():
                         print('keys - ', key)
