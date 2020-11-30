@@ -26,6 +26,7 @@ import os
 from schema import Schema, And, Use, Optional
 import json
 from pprint import pprint
+import io
 
 
 class StreamIt:
@@ -74,6 +75,20 @@ class StreamIt:
                     a = []
                     if keys_loco == a:
                         """нет ключей, записать в лог"""
+                        file = io.open(file=self.output_filename, mode='w', encoding='utf-8')
+                        text_0 = str(i)
+                        file.write(text_0)
+                        file.close()
+
+                        file = io.open(file=self.output_filename, mode='a', encoding='utf-8')
+                        text = " - в данном JSON ключей не обнаружено"
+                        file.write(text)
+                        file.close()
+
+                        file = io.open(file=self.output_filename, mode='a', encoding='utf-8')
+                        text = "\n"
+                        file.write(text)
+                        file.close()
                         continue
 
                     info = [keys_loco]
@@ -96,20 +111,10 @@ class StreamIt:
         for i in self.storage_schema_content:
             pprint(i)
 
-
     def go(self):
         self.schema_0()
-        # self.json_0()
-
-
-
-
-
-
+        self.json_0()
 
 
 test = StreamIt()
 test.go()
-
-
-
