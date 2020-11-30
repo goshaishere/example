@@ -25,6 +25,7 @@
 import os
 from schema import Schema, And, Use, Optional
 import json
+from pprint import pprint
 
 
 class StreamIt:
@@ -32,22 +33,24 @@ class StreamIt:
     def __init__(self):
         self.event_path = "task_folder\\event"
         self.schema_path = "task_folder\\schema"
+        self.output_filename = 'README'
 
         # это список жсонов
         self.storage_json_names = []
         # это содержимое жсонов
-        self.storage_json_content = {}
+        self.storage_json_content = []
 
         # это список схем
         self.storage_schema_names = []
         # это содержимое схем
-        self.storage_schema_content = {}
-
-    def json_0(self):
+        self.storage_schema_content = []
 
         for dir_path, subdir_list, name_list in os.walk(self.event_path):
             self.storage_json_names = name_list
 
+
+
+    def json_0(self):
         for i in self.storage_json_names:
             json_name = str(i)
             im_here = os.getcwd()
@@ -55,17 +58,27 @@ class StreamIt:
             path = os.path.join(im_here, path_loco)
             with open(path) as file:
                 data = json.load(file)
-                print(type(data))
-                print(data)
-                result = [json_name, data]
-                self.storage_json_content.append(result)
+                type_loco = type(data)
+                if str(type_loco) == "<class 'NoneType'>":
+                    """вместо continue добавить запись об ошибке типа"""
+                    continue
 
+                # pprint(data)
 
-    def get_names_0(self):
+                for key, value in data.items():
+                    print('key', key)
+                    print()
+                    print()
+                    print('value', value)
+                    print()
+                    print()
+                    print()
+                    print()
+
+    def schema_0(self):
         for dir_path, subdir_list, name_list in os.walk(self.schema_path):
             self.storage_schema_names = name_list
 
-    def collect_content_0(self):
         for i in self.storage_schema_names:
             name = str(i)
             im_here = os.getcwd()
@@ -74,8 +87,12 @@ class StreamIt:
             with open(path) as file:
                 for data in file:
                     data = Schema(data)
+                    print(type(data))
+                    print(data)
                     result = [name, data]
                     self.storage_schema_content.append(result)
+
+        pprint(self.storage_schema_content)
 
     def analyse(self):
         for name_schema, data_schema in self.storage_schema_content:
@@ -86,14 +103,15 @@ class StreamIt:
                     print(key)
                     print(value)
 
+    def try_it(self):
+        pass
+
+
+
     def go(self):
         self.json_0()
-        #
-        # self.get_names_0()
-        # self.collect_content_0()
-        #
-        # self.analyse()
 
 
 test = StreamIt()
 test.go()
+
