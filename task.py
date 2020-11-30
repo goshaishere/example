@@ -31,10 +31,13 @@ import io
 
 class StreamIt:
     def __init__(self):
+
+
         # контейнер для жсонов и относительный путь к папке с JSON
         self.event_path = "task_folder\\event"
         self.json_names_list = []
-        self.json_names_dict = {}
+
+        self.json_dicts = {}
 
         # список для ключей жсонов
         self.list_json_keys = []
@@ -55,6 +58,9 @@ class StreamIt:
             self.storage_schema_names = name_list
 
     def json_0(self):
+        file = open(file=self.output_filename, mode='w', encoding='utf-8')
+        file.close()
+
         for i in self.json_names_list:
             json_name = str(i)
             im_here = os.getcwd()
@@ -62,37 +68,46 @@ class StreamIt:
             path = os.path.join(im_here, path_loco)
             with open(path) as file:
                     data = json.load(file)
-                    type_loco = type(data)
-
-                    if str(type_loco) == "<class 'NoneType'>":
+                    type_loco = str(type(data))
+                    x = "<class 'NoneType'>"
+                    if type_loco == x:
                         """перед continue добавить запись об ошибке типа, не читается json"""
+                        file = open(file=self.output_filename, mode='a', encoding='utf-8')
+                        text_0 = str(i)
+                        file.write(text_0)
+                        text = " - данный JSON не читается"
+                        file.write(text)
+                        text_1 = "\n"
+                        file.write(text_1)
+                        file.close()
                         continue
 
                     keys_loco = []
                     for key, value in data.items():
+                        print(key)
                         keys_loco.append(key)
 
                     a = []
                     if keys_loco == a:
                         """нет ключей, записать в лог"""
-                        file = io.open(file=self.output_filename, mode='w', encoding='utf-8')
+                        file = open(file=self.output_filename, mode='a', encoding='utf-8')
                         text_0 = str(i)
                         file.write(text_0)
-                        file.close()
-
-                        file = io.open(file=self.output_filename, mode='a', encoding='utf-8')
                         text = " - в данном JSON ключей не обнаружено"
                         file.write(text)
-                        file.close()
-
-                        file = io.open(file=self.output_filename, mode='a', encoding='utf-8')
-                        text = "\n"
-                        file.write(text)
+                        text_1 = "\n"
+                        file.write(text_1)
                         file.close()
                         continue
 
-                    info = [keys_loco]
-                    self.list_json_keys.append(info)
+                    print(keys_loco)
+                    self.json_dicts.update({i: keys_loco})
+
+        #
+        # len_0 = len(self.json_dicts)
+        # len_1 = len(self.json_names_list)
+        # print(len_0, self.json_dicts)
+        # print(len_1, self.json_names_list)
 
     def schema_0(self):
         for i in self.storage_schema_names:
@@ -103,17 +118,21 @@ class StreamIt:
             with open(path) as file:
                 for data in file:
                     data = Schema(data)
-                    print(type(data))
-                    print(data)
+                    # print(type(data))
+                    # print(data)
                     result = [name, data]
                     self.storage_schema_content.append(result)
 
-        for i in self.storage_schema_content:
-            pprint(i)
+        # for i in self.storage_schema_content:
+        #     pprint(i)
+
+    def printer(self):
+        pass
 
     def go(self):
-        self.schema_0()
         self.json_0()
+        self.schema_0()
+
 
 
 test = StreamIt()
