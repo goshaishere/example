@@ -32,26 +32,29 @@ class StreamIt:
     def __init__(self):
         # контейнер для жсонов и относительный путь к папке с JSON
         self.event_path = "task_folder\\event"
-        self.json_names = []
+        self.json_names_list = []
+        self.json_names_dict = {}
 
         # список для ключей жсонов
         self.list_json_keys = []
 
-        # список для схем и относительный путь к SCHEMA
+        # список для имен схем и относительный путь к SCHEMA
         self.storage_schema_names = []
         self.schema_path = "task_folder\\schema"
 
+        # шаблоны
+        self.storage_schema_content = []
         # файл для вывода
         self.output_filename = 'README.txt'
 
         # добываем имена файлов
         for dir_path, subdir_list, name_list in os.walk(self.event_path):
-            self.json_names = name_list
+            self.json_names_list = name_list
         for dir_path, subdir_list, name_list in os.walk(self.schema_path):
             self.storage_schema_names = name_list
 
     def json_0(self):
-        for i in self.json_names:
+        for i in self.json_names_list:
             json_name = str(i)
             im_here = os.getcwd()
             path_loco = os.path.join(self.event_path, json_name)
@@ -61,42 +64,48 @@ class StreamIt:
                     type_loco = type(data)
 
                     if str(type_loco) == "<class 'NoneType'>":
-                        """перед continue добавить запись об ошибке типа"""
-                        self.json_names.remove(i)
+                        """перед continue добавить запись об ошибке типа, не читается json"""
                         continue
-                    # pprint(data)
-                    # print()
-                    # print('filename - ', i)
+
                     keys_loco = []
                     for key, value in data.items():
-                        # print('key - ', key)
-                        # print('value - ', value)
                         keys_loco.append(key)
 
                     a = []
                     if keys_loco == a:
-                        """нет ключей"""
-                        self.json_names.remove(i)
+                        """нет ключей, записать в лог"""
                         continue
 
                     info = [keys_loco]
                     self.list_json_keys.append(info)
 
-                    # print()
-                    #print('keys in - ', i, "- >", keys_loco)
+    def schema_0(self):
+        for i in self.storage_schema_names:
+            name = str(i)
+            im_here = os.getcwd()
+            path_loco = os.path.join(self.schema_path, name)
+            path = os.path.join(im_here, path_loco)
+            with open(path) as file:
+                for data in file:
+                    data = Schema(data)
+                    print(type(data))
+                    print(data)
+                    result = [name, data]
+                    self.storage_schema_content.append(result)
 
-                    # print()
-                    # print()
-                    # print()
+        for i in self.storage_schema_content:
+            pprint(i)
+
 
     def go(self):
-        self.json_0()
-        # print(self.list_json_keys)
-        # print(self.json_names)
-        len_list = len(self.list_json_keys)
-        print(len_list)
-        for i in range(0, len_list):
-            print(self.list_json_keys[i], self.json_names[i])
+        self.schema_0()
+        # self.json_0()
+
+
+
+
+
+
 
 
 test = StreamIt()
