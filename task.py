@@ -36,18 +36,18 @@ class StreamIt:
         # это список жсонов
         self.storage_json_names = []
         # это содержимое жсонов
-        self.storage_json_content = []
+        self.storage_json_content = {}
 
         # это список схем
         self.storage_schema_names = []
         # это содержимое схем
-        self.storage_schema_content = []
+        self.storage_schema_content = {}
 
-    def get_names(self):
+    def json_0(self):
+
         for dir_path, subdir_list, name_list in os.walk(self.event_path):
             self.storage_json_names = name_list
 
-    def collect_content(self):
         for i in self.storage_json_names:
             json_name = str(i)
             im_here = os.getcwd()
@@ -55,6 +55,8 @@ class StreamIt:
             path = os.path.join(im_here, path_loco)
             with open(path) as file:
                 data = json.load(file)
+                print(type(data))
+                print(data)
                 result = [json_name, data]
                 self.storage_json_content.append(result)
 
@@ -84,16 +86,13 @@ class StreamIt:
                     print(key)
                     print(value)
 
-
-
     def go(self):
-        self.get_names()
-        self.collect_content()
-
-        self.get_names_0()
-        self.collect_content_0()
-
-        self.analyse()
+        self.json_0()
+        #
+        # self.get_names_0()
+        # self.collect_content_0()
+        #
+        # self.analyse()
 
 
 test = StreamIt()
