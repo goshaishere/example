@@ -32,7 +32,10 @@ class StreamIt:
     def __init__(self):
         # контейнер для жсонов и относительный путь к папке с JSON
         self.event_path = "task_folder\\event"
-        self.storage_json_names = []
+        self.json_names = []
+
+        # список для ключей жсонов
+        self.list_json_keys = []
 
         # список для схем и относительный путь к SCHEMA
         self.storage_schema_names = []
@@ -43,12 +46,12 @@ class StreamIt:
 
         # добываем имена файлов
         for dir_path, subdir_list, name_list in os.walk(self.event_path):
-            self.storage_json_names = name_list
+            self.json_names = name_list
         for dir_path, subdir_list, name_list in os.walk(self.schema_path):
             self.storage_schema_names = name_list
 
     def json_0(self):
-        for i in self.storage_json_names:
+        for i in self.json_names:
             json_name = str(i)
             im_here = os.getcwd()
             path_loco = os.path.join(self.event_path, json_name)
@@ -56,8 +59,10 @@ class StreamIt:
             with open(path) as file:
                     data = json.load(file)
                     type_loco = type(data)
+
                     if str(type_loco) == "<class 'NoneType'>":
                         """перед continue добавить запись об ошибке типа"""
+                        self.json_names.remove(i)
                         continue
                     # pprint(data)
                     # print()
@@ -67,14 +72,31 @@ class StreamIt:
                         # print('key - ', key)
                         # print('value - ', value)
                         keys_loco.append(key)
+
+                    a = []
+                    if keys_loco == a:
+                        """нет ключей"""
+                        self.json_names.remove(i)
+                        continue
+
+                    info = [keys_loco]
+                    self.list_json_keys.append(info)
+
                     # print()
-                    print('keys in - ', i, "- >", keys_loco)
+                    #print('keys in - ', i, "- >", keys_loco)
+
                     # print()
                     # print()
                     # print()
 
     def go(self):
         self.json_0()
+        # print(self.list_json_keys)
+        # print(self.json_names)
+        len_list = len(self.list_json_keys)
+        print(len_list)
+        for i in range(0, len_list):
+            print(self.list_json_keys[i], self.json_names[i])
 
 
 test = StreamIt()
