@@ -33,7 +33,7 @@ class StreamIt:
     def __init__(self):
         self.event_path = "task_folder\\event"
         self.schema_path = "task_folder\\schema"
-        self.output_filename = 'README'
+        self.output_filename = 'README.txt'
 
         # это список жсонов
         self.storage_json_names = []
@@ -48,6 +48,11 @@ class StreamIt:
         for dir_path, subdir_list, name_list in os.walk(self.event_path):
             self.storage_json_names = name_list
 
+    def help(self, output_filename, i):
+        loco = open(output_filename, 'w')
+        output = str(i) + " <--  данный файл не соответсвует формату JSON"
+        loco.write(output)
+
     def json_0(self):
         for i in self.storage_json_names:
             json_name = str(i)
@@ -55,23 +60,31 @@ class StreamIt:
             path_loco = os.path.join(self.event_path, json_name)
             path = os.path.join(im_here, path_loco)
             with open(path) as file:
-                data = json.load(file)
-                type_loco = type(data)
-                if str(type_loco) == "<class 'NoneType'>":
-                    """вместо continue добавить запись об ошибке типа"""
-                    continue
+                try:
+                    data = json.load(file)
+                    type_loco = type(data)
+                    if str(type_loco) == "<class 'NoneType'>":
+                        """перед continue добавить запись об ошибке типа"""
+                        self.output_filename(output_filename = self.output_filename, i=i)
+                        continue
+
+                except Exception as exc:
+                        print(exc)
+
+
+
 
                 # pprint(data)
 
-                for key, value in data.items():
-                    print('key', key)
-                    print()
-                    print()
-                    print('value', value)
-                    print()
-                    print()
-                    print()
-                    print()
+                # for key, value in data.items():
+                #     print('key', key)
+                #     print()
+                #     print()
+                #     print('value', value)
+                #     print()
+                #     print()
+                #     print()
+                #     print()
 
     def schema_0(self):
         for dir_path, subdir_list, name_list in os.walk(self.schema_path):
@@ -108,6 +121,7 @@ class StreamIt:
 
     def go(self):
         self.json_0()
+
 
 
 test = StreamIt()
