@@ -29,30 +29,23 @@ from pprint import pprint
 
 
 class StreamIt:
-
     def __init__(self):
+        # здесь будет список жсонов и относительный путь к нему
         self.event_path = "task_folder\\event"
+        self.storage_json_names = []
+
+        # это список схем и относительный путь к ним
+        self.storage_schema_names = []
         self.schema_path = "task_folder\\schema"
+
+        # файл для вывода
         self.output_filename = 'README.txt'
 
-        # это список жсонов
-        self.storage_json_names = []
-        # это список схем
-        self.storage_schema_names = []
-
-        # это содержимое жсонов
-        self.storage_json_content = []
-
-        # это содержимое схем
-        self.storage_schema_content = []
-
+        # добываем имена файлов
         for dir_path, subdir_list, name_list in os.walk(self.event_path):
             self.storage_json_names = name_list
-
-    def writer_0(self, output_filename, i):
-        loco = open(output_filename, 'w')
-        output = str(i) + " <--  данный файл не соответсвует формату JSON"
-        loco.write(output)
+        for dir_path, subdir_list, name_list in os.walk(self.schema_path):
+            self.storage_schema_names = name_list
 
     def json_0(self):
         for i in self.storage_json_names:
@@ -66,55 +59,26 @@ class StreamIt:
                     if str(type_loco) == "<class 'NoneType'>":
                         """перед continue добавить запись об ошибке типа"""
                         continue
-                    pprint(data)
-                    print()
-                    print('filename - ', i)
-                    print()
+                    # pprint(data)
+                    # print()
+                    # print('filename - ', i)
+                    keys_loco = []
                     for key, value in data.items():
-                        print('keys - ', key)
-                        print('value - ', value)
-                    print()
-                    print()
-                    print()
-
-    def schema_0(self):
-        for dir_path, subdir_list, name_list in os.walk(self.schema_path):
-            self.storage_schema_names = name_list
-
-        for i in self.storage_schema_names:
-            name = str(i)
-            im_here = os.getcwd()
-            path_loco = os.path.join(self.schema_path, name)
-            path = os.path.join(im_here, path_loco)
-            with open(path) as file:
-                for data in file:
-                    data = Schema(data)
-                    print(type(data))
-                    print(data)
-                    result = [name, data]
-                    self.storage_schema_content.append(result)
-
-        pprint(self.storage_schema_content)
-
-    def analyse(self):
-        for name_schema, data_schema in self.storage_schema_content:
-            for name_json, data_json in self.storage_json_content:
-                validated = data_schema.is_valid(data_json)
-                data_json = dict(data_json)
-                for key, value in data_json.items():
-                    print(key)
-                    print(value)
-
-    def try_it(self):
-        pass
-
-
+                        # print('key - ', key)
+                        # print('value - ', value)
+                        keys_loco.append(key)
+                    # print()
+                    print('keys in - ', i, "- >", keys_loco)
+                    # print()
+                    # print()
+                    # print()
 
     def go(self):
         self.json_0()
 
 
-
 test = StreamIt()
 test.go()
+
+
 
